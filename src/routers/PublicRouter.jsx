@@ -1,13 +1,17 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { useUser } from '../hooks/Context';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const PublicRouter = ({ children }) => {
-  const { user } = useUser();
+  const isAuth = localStorage.getItem("auth");
+  const navigate = useNavigate();
 
-  if (user) {
-    return <Navigate to="/" />;
-  }
+  useEffect(() => {
+    if (isAuth) {
+      navigate(-1);
+    }
+  }, [isAuth, navigate]);
+
+  if (isAuth) return null;
 
   return children;
 };
